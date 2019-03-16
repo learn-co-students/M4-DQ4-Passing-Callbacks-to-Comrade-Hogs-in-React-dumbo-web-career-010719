@@ -5,27 +5,28 @@ import exclamation from "../assets/exclamation.png"
 
 
 export default class GalaxySNote7 extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      panicked: false,
-    }
+  state = {
+      panicked: false
+  }
+
+  throwAFit = () => {
+    this.setState({panicked:true})
 
     this.squeelAudio = new Audio(wreee);
     this.exclaimAudio = new Audio(exclaim);
     this.exclaimAudio.addEventListener("ended", () => {
-      this.throwAFit()
+      this.props.alterEnvironment("inhospitable")
     }, false)
   }
 
-  throwAFit = () => {
-  }
-
   relax = () => {
+    this.setState({panicked:false})
   }
 
   exclaim = () => {
+    this.throwAFit()
     if (this.state.panicked) return
+    setTimeout(this.relax, 3000)
     this.exclaimAudio.play()
     this.squeelAudio.play()
   }
@@ -33,6 +34,7 @@ export default class GalaxySNote7 extends React.Component {
   panic = () => (<img id="galaxy-exclamation" className="exclamation" src={exclamation} alt="" />)
 
   render() {
+    // console.log(this.state.panicked)
     return(
       <div id="galaxy-s-note" onClick={this.exclaim}>
         {(this.state.panicked) ? this.panic() : null}
